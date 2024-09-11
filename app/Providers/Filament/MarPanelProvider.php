@@ -2,7 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Auth\Login;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -20,21 +19,16 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class AdmPanelProvider extends PanelProvider
+class MarPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
+            ->id('mar')
+            ->path('mar')
             ->darkMode(false)
-            ->id('adm')
-            ->path('adm')
             ->brandName('MRP Lite')
             // ->profile(EditProfile::class, false)
-            ->login(Login::class)
-            ->passwordReset()
-            ->emailVerification()
-            ->emailVerificationRoutePrefix('email-verification')
             ->userMenuItems([
                 'profile' => MenuItem::make()->label(fn() => auth()->user()->name),
                 'logout' => MenuItem::make()->label('Log out'),
@@ -42,12 +36,12 @@ class AdmPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::hex('#3366CC'),
             ])
-            ->discoverResources(in: app_path('Filament/Adm/Resources'), for: 'App\\Filament\\Adm\\Resources')
-            ->discoverPages(in: app_path('Filament/Adm/Pages'), for: 'App\\Filament\\Adm\\Pages')
+            ->discoverResources(in: app_path('Filament/Mar/Resources'), for: 'App\\Filament\\Mar\\Resources')
+            ->discoverPages(in: app_path('Filament/Mar/Pages'), for: 'App\\Filament\\Mar\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Adm/Widgets'), for: 'App\\Filament\\Adm\\Widgets')
+            ->discoverWidgets(in: app_path('Filament/Mar/Widgets'), for: 'App\\Filament\\Mar\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,

@@ -39,7 +39,7 @@ class User extends Authenticatable implements FilamentUser
         'remember_token',
     ];
 
-    protected $appends = ['status'];
+    protected $appends = ['status', 'is_active'];
 
     /**
      * Get the attributes that should be cast.
@@ -51,6 +51,7 @@ class User extends Authenticatable implements FilamentUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
     }
 
@@ -67,5 +68,14 @@ class User extends Authenticatable implements FilamentUser
         }
 
         return $status;
+    }
+
+    public function getIsActiveAttribute()
+    {
+        if (!empty($this->email_verified_at)) {
+            return true;
+        }
+
+        return false;
     }
 }
