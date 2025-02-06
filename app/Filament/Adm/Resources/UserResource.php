@@ -1,9 +1,10 @@
 <?php
-
 namespace App\Filament\Adm\Resources;
 
 use App\Filament\Adm\Resources\UserResource\Pages;
 use App\Models\User;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\Alignment;
@@ -11,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
 {
@@ -28,7 +30,33 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name')
+                    ->translateLabel(),
+                TextInput::make('login_name')
+                    ->translateLabel()
+                    ->unique(ignoreRecord: true)
+                    ->required(),
+                Select::make('employee_id')
+                    ->label('Employee ID')
+                    ->translateLabel()
+                    ->options([])
+                    ->searchable(),
+                TextInput::make('email')
+                    ->translateLabel()
+                    ->email(),
+                TextInput::make('password')
+                    ->translateLabel()
+                    ->password()
+                    ->revealable()
+                    ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
+                    ->dehydrated(fn (?string $state): bool => filled($state)),
+                TextInput::make('password_confirmation')
+                    ->label('Confirm Password')
+                    ->translateLabel()
+                    ->password()
+                    ->same('password')
+                    ->revealable()
+                    ->visible(fn (string $operation): bool => $operation === 'create'),
             ]);
     }
 
@@ -67,8 +95,8 @@ class UserResource extends Resource
                     ->alignment(Alignment::Center)
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
-                        'Inactive' => 'gray',
-                        'Active' => 'success',
+                        'Inactive'                        => 'gray',
+                        'Active'                          => 'success',
                     }),
             ])
             ->filters([
@@ -94,9 +122,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
+            'index'  => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'edit'   => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }
