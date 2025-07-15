@@ -23,7 +23,7 @@ class UsersTableSeeder extends Seeder
         $getUserModel->invoke($filamentMakeUserCommand)::create([
             'login_name' => 'sysadmin',
             'name' => 'Sysadmin',
-            'email_verified_at' => now(),
+        'email_verified_at' => now(),
             'password' => Hash::make('password'),
         ]);
 

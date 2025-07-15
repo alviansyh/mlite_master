@@ -1,7 +1,9 @@
 <?php
 namespace App\Providers;
 
+use App\Http\Responses\LoginResponse;
 use BezhanSalleh\PanelSwitch\PanelSwitch;
+use Filament\Http\Responses\Auth\Contracts\LoginResponse as LoginResponseContract;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-
+        $this->app->bind(LoginResponseContract::class, LoginResponse::class);
     }
 
     /**
@@ -20,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         PanelSwitch::configureUsing(function (PanelSwitch $panelSwitch) {
-            $panelSwitch
+            $panelSwitch->modalHeading('Available Panels')
                 ->simple()
                 ->iconSize(16)
                 ->visible(fn(): bool => auth()->user()->hasAnyRole([
@@ -29,28 +31,6 @@ class AppServiceProvider extends ServiceProvider
                     'manager',
                     'employee',
                 ]))
-                ->panels(function () {
-                    $panels = [];
-                    if (auth()->check()) {
-                        $user = auth()->user();
-                        switch ($user) {
-                            case $user->hasRole('sysadmin'):
-                            case $user->hasRole('admin'):
-                                $panels = ['adm'];
-                                break;
-
-                            case $user->hasRole('manager'):
-                            case $user->hasRole('employee'):
-                                $panels = ['mar'];
-                                break;
-                            default:
-                                $panels = [];
-                                break;
-                        }
-                    }
-
-                    return $panels;
-                })
                 ->labels(function () {
                     $labels = [];
                     if (auth()->check()) {
@@ -62,7 +42,6 @@ class AppServiceProvider extends ServiceProvider
                                     'adm' => 'ADMIN',
                                 ];
                                 break;
-
                             case $user->hasRole('manager'):
                             case $user->hasRole('employee'):
                                 $labels = [
@@ -76,6 +55,27 @@ class AppServiceProvider extends ServiceProvider
                     }
 
                     return $labels;
+                })
+                ->panels(function () {
+                    $panels = ['adm', 'mar'];
+                    if (auth()->check()) {
+                        $user = auth()->user();
+                        switch ($user) {
+                            case $user->hasRole('sysadmin'):
+                            case $user->hasRole('admin'):
+                                $panels = ['adm'];
+                                break;
+                            case $user->hasRole('manager'):
+                            case $user->hasRole('employee'):
+                                $panels = ['mar'];
+                                break;
+                            default:
+                                $panels = ['app'];
+                                break;
+                        }
+                    }
+
+                    return $panels;
                 });
         });
     }

@@ -11,6 +11,7 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Notifications\Notification;
 use Filament\Pages\Auth\Login as BaseAuth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class Login extends BaseAuth
 {
@@ -48,7 +49,7 @@ class Login extends BaseAuth
 
         if (
             ($user instanceof FilamentUser) &&
-            (!$user->canAccessPanel(Filament::getCurrentPanel()))
+            (! $user->canAccessPanel(Filament::getCurrentPanel()))
         ) {
             Filament::auth()->logout();
 

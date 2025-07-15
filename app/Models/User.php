@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -27,6 +26,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'contact',
         'password',
+        'email_verified_at',
     ];
 
     /**
@@ -50,8 +50,8 @@ class User extends Authenticatable implements FilamentUser
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'is_active' => 'boolean',
+            'password'          => 'hashed',
+            'is_active'         => 'boolean',
         ];
     }
 
@@ -63,7 +63,7 @@ class User extends Authenticatable implements FilamentUser
     public function getStatusAttribute()
     {
         $status = 'Inactive';
-        if (!empty($this->email_verified_at)) {
+        if (! empty($this->email_verified_at)) {
             $status = 'Active';
         }
 
@@ -72,7 +72,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function getIsActiveAttribute()
     {
-        if (!empty($this->email_verified_at)) {
+        if (! empty($this->email_verified_at)) {
             return true;
         }
 
