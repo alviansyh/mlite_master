@@ -1,8 +1,10 @@
 <?php
 namespace App\Http\Responses;
 
+use Filament\Facades\Filament;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse as LoginResponseContract;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LoginResponse implements LoginResponseContract
 {
@@ -17,12 +19,16 @@ class LoginResponse implements LoginResponseContract
         $user = Auth::user();
 
         if ($user->hasAnyRole(['sysadmin', 'admin'])) {
-            return redirect()->intended(url('/adm'));
+            return redirect()->to(Filament::getPanel('adm')->getUrl());
         } elseif ($user->hasAnyRole(['manager', 'employee', 'guest'])) {
-            return redirect()->intended(url('/mar'));
+            return redirect()->to(Filament::getPanel('wrh')->getUrl());
+        } else {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            Session::flush();
+            return redirect()->to(Filament::getPanel('app')->getUrl());
         }
-
-        Auth::logout();
-        return redirect()->intended(url('/app'));
+        
     }
 }

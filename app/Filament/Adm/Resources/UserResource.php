@@ -30,7 +30,10 @@ class UserResource extends Resource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->hasAnyRole(['sysadmin', 'admin']);
+        if (auth()->check()) {
+            return auth()->user()->hasAnyRole(['sysadmin', 'admin']);
+        }
+        return false;
     }
 
     public static function form(Form $form): Form

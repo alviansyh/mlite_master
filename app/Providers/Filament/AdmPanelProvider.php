@@ -2,8 +2,8 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Auth\Login;
 use Filament\Http\Middleware\Authenticate;
+use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\MenuItem;
@@ -16,7 +16,6 @@ use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
-use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
@@ -25,15 +24,10 @@ class AdmPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->darkMode(false)
             ->id('adm')
             ->path('adm')
-            ->brandName('MRP Lite')
-            // ->profile(EditProfile::class, false)
-            ->login(Login::class)
-            ->passwordReset()
-            ->emailVerification()
-            ->emailVerificationRoutePrefix('email-verification')
+            ->brandName('Stok Cepat')
+            ->darkMode(false)
             ->userMenuItems([
                 'profile' => MenuItem::make()->label(fn() => auth()->user()->name),
                 'logout' => MenuItem::make()->label('Log out'),
@@ -49,7 +43,6 @@ class AdmPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Adm/Widgets'), for: 'App\\Filament\\Adm\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

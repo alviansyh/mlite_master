@@ -4,6 +4,7 @@ namespace App\Providers;
 use App\Http\Responses\LoginResponse;
 use BezhanSalleh\PanelSwitch\PanelSwitch;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse as LoginResponseContract;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -32,46 +33,25 @@ class AppServiceProvider extends ServiceProvider
                     'employee',
                 ]))
                 ->labels(function () {
-                    $labels = [];
-                    if (auth()->check()) {
-                        $user = auth()->user();
-                        switch ($user) {
-                            case $user->hasRole('sysadmin'):
-                            case $user->hasRole('admin'):
-                                $labels = [
-                                    'adm' => 'ADMIN',
-                                ];
-                                break;
-                            case $user->hasRole('manager'):
-                            case $user->hasRole('employee'):
-                                $labels = [
-                                    'mar' => 'MARKETING',
-                                ];
-                                break;
-                            default:
-                                $labels = [];
-                                break;
-                        }
-                    }
+                    $labels = [
+                        'app' => 'App',
+                        'adm' => 'Admin',
+                        'wrh' => 'Gudang',
+                        'mar' => 'Pemasaran',
+                    ];
 
                     return $labels;
                 })
                 ->panels(function () {
-                    $panels = ['adm', 'mar'];
+                    $panels = [];
                     if (auth()->check()) {
                         $user = auth()->user();
-                        switch ($user) {
-                            case $user->hasRole('sysadmin'):
-                            case $user->hasRole('admin'):
-                                $panels = ['adm'];
-                                break;
-                            case $user->hasRole('manager'):
-                            case $user->hasRole('employee'):
-                                $panels = ['mar'];
-                                break;
-                            default:
-                                $panels = ['app'];
-                                break;
+                        if ($user->hasAnyRole('sysadmin', 'admin')) {
+                            $panels = ['adm'];
+                        } elseif ($user->hasAnyRole('manager', 'employee')) {
+                            $panels = ['wrh', 'mar'];
+                        } else {
+                            $panels = ['app'];
                         }
                     }
 

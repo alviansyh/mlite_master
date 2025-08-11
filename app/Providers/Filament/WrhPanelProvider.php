@@ -3,9 +3,11 @@
 namespace App\Providers\Filament;
 
 use Filament\Http\Middleware\Authenticate;
+use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\MenuItem;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -15,17 +17,16 @@ use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
-use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class MarPanelProvider extends PanelProvider
+class WrhPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->id('mar')
-            ->path('mar')
+            ->id('wrh')
+            ->path('wrh')
             ->brandName('Stok Cepat')
             ->darkMode(false)
             ->userMenuItems([
@@ -35,12 +36,12 @@ class MarPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::hex('#3366CC'),
             ])
-            ->discoverResources(in: app_path('Filament/Mar/Resources'), for: 'App\\Filament\\Mar\\Resources')
-            ->discoverPages(in: app_path('Filament/Mar/Pages'), for: 'App\\Filament\\Mar\\Pages')
+            ->discoverResources(in: app_path('Filament/Wrh/Resources'), for: 'App\\Filament\\Wrh\\Resources')
+            ->discoverPages(in: app_path('Filament/Wrh/Pages'), for: 'App\\Filament\\Wrh\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Mar/Widgets'), for: 'App\\Filament\\Mar\\Widgets')
+            ->discoverWidgets(in: app_path('Filament/Wrh/Widgets'), for: 'App\\Filament\\Wrh\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
             ])
@@ -57,6 +58,11 @@ class MarPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label('Master')
+                    ->collapsed(),
             ])
             ->topNavigation();
     }
