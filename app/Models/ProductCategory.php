@@ -1,11 +1,10 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Warehouse extends Model
+class ProductCategory extends Model
 {
     use HasFactory;
 
@@ -15,12 +14,8 @@ class Warehouse extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'code',
         'name',
-        'address',
-        'state',
-        'city',
-        'postcode',
-        'is_active'
+        'description',
+        'is_active',
     ];
 }

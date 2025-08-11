@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Warehouse extends Model
+class Unit extends Model
 {
     use HasFactory;
 
@@ -17,10 +17,5 @@ class Warehouse extends Model
     protected $fillable = [
         'code',
         'name',
-        'address',
-        'state',
-        'city',
-        'postcode',
-        'is_active'
     ];
 }

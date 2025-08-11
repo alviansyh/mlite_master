@@ -61,7 +61,7 @@ class WrhPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 NavigationGroup::make()
-                    ->label('Master')
+                    ->label('Master Data')
                     ->collapsed(),
             ])
             ->topNavigation();
