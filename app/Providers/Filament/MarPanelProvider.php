@@ -35,12 +35,12 @@ class MarPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::hex('#3366CC'),
             ])
-            ->discoverResources(in: app_path('Filament/Mar/Resources'), for: 'App\\Filament\\Mar\\Resources')
-            ->discoverPages(in: app_path('Filament/Mar/Pages'), for: 'App\\Filament\\Mar\\Pages')
+            ->discoverResources(app_path('Filament/Mar/Resources'), 'App\\Filament\\Mar\\Resources')
+            ->discoverPages(app_path('Filament/Mar/Pages'), 'App\\Filament\\Mar\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Mar/Widgets'), for: 'App\\Filament\\Mar\\Widgets')
+            ->discoverWidgets(app_path('Filament/Mar/Widgets'), 'App\\Filament\\Mar\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
             ])

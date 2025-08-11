@@ -41,12 +41,12 @@ class AppPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::hex('#3366CC'),
             ])
-            ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\\Filament\\App\\Resources')
-            ->discoverPages(in: app_path('Filament/App/Pages'), for: 'App\\Filament\\App\\Pages')
+            ->discoverResources(app_path('Filament/App/Resources'), 'App\\Filament\\App\\Resources')
+            ->discoverPages(app_path('Filament/App/Pages'), 'App\\Filament\\App\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/App/Widgets'), for: 'App\\Filament\\App\\Widgets')
+            ->discoverWidgets(app_path('Filament/App/Widgets'), 'App\\Filament\\App\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
             ])

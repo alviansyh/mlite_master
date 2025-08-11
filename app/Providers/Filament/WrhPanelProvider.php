@@ -36,12 +36,12 @@ class WrhPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::hex('#3366CC'),
             ])
-            ->discoverResources(in: app_path('Filament/Wrh/Resources'), for: 'App\\Filament\\Wrh\\Resources')
-            ->discoverPages(in: app_path('Filament/Wrh/Pages'), for: 'App\\Filament\\Wrh\\Pages')
+            ->discoverResources(app_path('Filament/Wrh/Resources'), 'App\\Filament\\Wrh\\Resources')
+            ->discoverPages(app_path('Filament/Wrh/Pages'), 'App\\Filament\\Wrh\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Wrh/Widgets'), for: 'App\\Filament\\Wrh\\Widgets')
+            ->discoverWidgets(app_path('Filament/Wrh/Widgets'), 'App\\Filament\\Wrh\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
             ])

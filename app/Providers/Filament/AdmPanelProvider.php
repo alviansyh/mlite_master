@@ -35,12 +35,12 @@ class AdmPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::hex('#3366CC'),
             ])
-            ->discoverResources(in: app_path('Filament/Adm/Resources'), for: 'App\\Filament\\Adm\\Resources')
-            ->discoverPages(in: app_path('Filament/Adm/Pages'), for: 'App\\Filament\\Adm\\Pages')
+            ->discoverResources(app_path('Filament/Adm/Resources'), 'App\\Filament\\Adm\\Resources')
+            ->discoverPages(app_path('Filament/Adm/Pages'), 'App\\Filament\\Adm\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Adm/Widgets'), for: 'App\\Filament\\Adm\\Widgets')
+            ->discoverWidgets(app_path('Filament/Adm/Widgets'), 'App\\Filament\\Adm\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
             ])

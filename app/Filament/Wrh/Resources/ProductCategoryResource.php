@@ -14,13 +14,13 @@ class ProductCategoryResource extends Resource
 {
     protected static ?string $model = ProductCategory::class;
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationGroup = 'Master Data';
 
-    protected static ?string $navigationLabel = 'Kategori Produk';
+    protected static ?string $navigationLabel = 'Master Kategori Produk';
 
-    protected static ?string $modelLabel = 'Kategori Produk';
+    protected static ?string $modelLabel = 'Master Kategori Produk';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -37,22 +37,22 @@ class ProductCategoryResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label(ucwords('nama'))
-                    ->translateLabel(),
+                    ->label(ucwords('nama')),
                 TextColumn::make('description')
-                    ->label(ucwords('deskripsi'))
-                    ->translateLabel(),
+                    ->label(ucwords('deskripsi')),
                 TextColumn::make('is_active')
                     ->label(ucwords('status'))
-                    ->translateLabel()
                     ->alignment(Alignment::Center)
                     ->badge()
                     ->getStateUsing(function ($record) {
                         return (bool) $record->is_active ? ucwords('aktif') : ucwords('tidak aktif');
                     })
-                    ->color(fn(string $state): string => match ($state) {
-                        ucwords('aktif')                  => 'success',
-                        ucwords('tidak aktif')            => 'danger',
+                    ->color(function (string $state): string {
+                        $map = [
+                            ucwords('aktif') => 'success',
+                            ucwords('tidak aktif') => 'danger',
+                        ];
+                        return $map[$state] ?? 'secondary';
                     }),
             ])
             ->filters([

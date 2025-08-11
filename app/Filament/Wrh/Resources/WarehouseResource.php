@@ -4,6 +4,7 @@ namespace App\Filament\Wrh\Resources;
 use App\Filament\Wrh\Resources\WarehouseResource\Pages;
 use App\Models\Warehouse;
 use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -24,9 +25,9 @@ class WarehouseResource extends Resource
 
     protected static ?string $navigationGroup = 'Master Data';
 
-    protected static ?string $navigationLabel = 'Gudang';
+    protected static ?string $navigationLabel = 'Lokasi Gudang';
 
-    protected static ?string $modelLabel = 'Gudang';
+    protected static ?string $modelLabel = 'Lokasi Gudang';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -41,37 +42,46 @@ class WarehouseResource extends Resource
 
         return $form
             ->schema([
-                TextInput::make('code')
-                    ->translateLabel()
-                    ->dehydrateStateUsing(fn(string $state): string => strtoupper($state))
-                    ->required(),
-                TextInput::make('name')
-                    ->translateLabel()
-                    ->required(),
-                Select::make('state')
-                    ->live()
-                    ->options($state)
-                    ->searchable()
-                    ->translateLabel(),
-                Select::make('city')
-                    ->options(function (Get $get) use ($location) {
-                        $cities = [];
-                        if (filled($get('state'))) {
-                            $cities = Collect($location->where('nama', $get('state'))->first()['cities'])->pluck('nama', 'nama');
-                        }
-                        return $cities;
-                    })
-                    ->disabled(fn(Get $get): bool => ! filled($get('state')))
-                    ->searchable()
-                    ->translateLabel(),
-                Textarea::make('address')
-                    ->translateLabel(),
-                TextInput::make('postcode')
-                    ->translateLabel(),
-                Checkbox::make('is_active')
-                    ->label('Active')
-                    ->default(true)
-                    ->translateLabel(),
+                Section::make()
+                    ->schema([
+                        TextInput::make('code')
+                            ->label(ucwords('kode'))
+                            ->dehydrateStateUsing(fn(string $state): string => strtoupper($state))
+                            ->required(),
+                        TextInput::make('name')
+                            ->label(ucwords('nama'))
+                            ->required(),
+                        Select::make('state')
+                            ->label(ucwords('provinsi'))
+                            ->live()
+                            ->options($state)
+                            ->searchable(),
+                        Select::make('city')
+                            ->label(ucwords('kota / kab'))
+                            ->options(function (Get $get) use ($location) {
+                                $cities = [];
+                                if (filled($get('state'))) {
+                                    $cities = Collect($location->where('nama', $get('state'))->first()['cities'])->pluck('nama', 'nama');
+                                }
+                                return $cities;
+                            })
+                            ->disabled(fn(Get $get): bool => ! filled($get('state')))
+                            ->searchable(),
+                        Textarea::make('address')
+                            ->label(ucwords('alamat')),
+                        TextInput::make('postcode')
+                            ->label(ucwords('kode pos')),
+                    ])
+                    ->columns(2),
+                Section::make()
+                    ->description(ucwords('status'))
+                    ->schema([
+                        Checkbox::make('is_active')
+                            ->label(ucwords('aktif'))
+                            ->default(true)
+                        ,
+                    ])
+                    ->columns(2),
             ]);
     }
 
@@ -81,28 +91,34 @@ class WarehouseResource extends Resource
             ->columns([
                 TextColumn::make('code')
                     ->label(ucwords('kode'))
-                    ->translateLabel(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('name')
                     ->label(ucwords('nama'))
-                    ->translateLabel(),
+                    ->searchable(),
                 TextColumn::make('state')
                     ->label(ucwords('provinsi'))
-                    ->translateLabel(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('city')
                     ->label(ucwords('kota / kab'))
-                    ->translateLabel(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('is_active')
                     ->label(ucwords('status'))
-                    ->translateLabel()
                     ->alignment(Alignment::Center)
                     ->badge()
                     ->getStateUsing(function ($record) {
                         return (bool) $record->is_active ? ucwords('aktif') : ucwords('tidak aktif');
                     })
-                    ->color(fn(string $state): string => match ($state) {
-                        ucwords('aktif')                  => 'success',
-                        ucwords('tidak aktif')            => 'danger',
-                    }),
+                    ->color(function (string $state): string {
+                        $map = [
+                            ucwords('aktif')       => 'success',
+                            ucwords('tidak aktif') => 'danger',
+                        ];
+                        return $map[$state] ?? 'secondary';
+                    })
+                    ->sortable(),
             ])
             ->filters([
                 //
