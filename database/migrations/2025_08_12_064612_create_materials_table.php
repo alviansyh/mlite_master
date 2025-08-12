@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('materials', function (Blueprint $table) {
             $table->id();
             $table->string('code')->unique();
             $table->string('name');
             $table->text('description')->nullable();
 
-            $table->foreignId('product_category_id')->nullable()->constrained('product_categories')->nullOnDelete();
+            $table->foreignId('material_category_id')->nullable()->constrained('material_categories')->nullOnDelete();
 
             $table->string('base_unit_code');
             $table->foreign('base_unit_code')->references('code')->on('units');
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('materials');
     }
 };

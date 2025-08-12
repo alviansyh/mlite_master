@@ -1,8 +1,8 @@
 <?php
 namespace App\Filament\Wrh\Resources;
 
-use App\Filament\Wrh\Resources\ProductResource\Pages;
-use App\Models\Product;
+use App\Filament\Wrh\Resources\MaterialResource\Pages;
+use App\Models\Material;
 use App\Models\Unit;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -14,19 +14,19 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class ProductResource extends Resource
+class MaterialResource extends Resource
 {
-    protected static ?string $model = Product::class;
-
-    protected static ?int $navigationSort = 4;
+    protected static ?string $model = Material::class;
 
     protected static ?string $navigationGroup = 'Master Data';
 
-    protected static ?string $navigationLabel = 'Master Produk';
+    protected static ?string $navigationLabel = 'Bahan Baku';
 
-    protected static ?string $modelLabel = 'Master Produk';
+    protected static ?string $modelLabel = 'Bahan Baku';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 4;
+
+    protected static ?string $navigationIcon = 'heroicon-o-cube';
 
     public static function form(Form $form): Form
     {
@@ -35,18 +35,18 @@ class ProductResource extends Resource
                 Section::make()
                     ->schema([
                         TextInput::make('code')
-                            ->label('Kode Produk / SKU')
+                            ->label('Kode Bahan Baku / SKU')
                             ->required()
                             ->unique(ignoreRecord: true)
                             ->maxLength(255),
                         TextInput::make('name')
-                            ->label('Nama Produk')
+                            ->label('Nama Bahan Baku')
                             ->required()
                             ->maxLength(255),
                         Textarea::make('description')
                             ->label('Deskripsi')
                             ->maxLength(65535),
-                        Select::make('food_category_id')
+                        Select::make('material_category_id')
                             ->label('Kategori')
                             ->relationship('category', 'name')
                             ->required(),
@@ -69,17 +69,20 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('code')
-                    ->label('SKU')
+                    ->label('Kode / SKU')
                     ->searchable(),
                 TextColumn::make('name')
-                    ->label('Nama Produk')
+                    ->label('Nama Bahan Baku')
                     ->searchable(),
                 TextColumn::make('category.name')
-                    ->label('Kategori'),
+                    ->label('Kategori')
+                    ->sortable(),
                 TextColumn::make('baseUnit.name')
-                    ->label('Satuan Dasar'),
+                    ->label('Satuan Dasar')
+                    ->sortable(),
                 TextColumn::make('minimum_stock')
-                    ->label('Min. Stok'),
+                    ->numeric()
+                    ->sortable(),
             ])
             ->filters([
                 //
@@ -105,9 +108,9 @@ class ProductResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListProducts::route('/'),
-            'create' => Pages\CreateProduct::route('/create'),
-            'edit'   => Pages\EditProduct::route('/{record}/edit'),
+            'index'  => Pages\ListMaterials::route('/'),
+            'create' => Pages\CreateMaterial::route('/create'),
+            'edit'   => Pages\EditMaterial::route('/{record}/edit'),
         ];
     }
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class TransactionItem extends Model
 {
     use HasFactory;
 
@@ -15,17 +15,22 @@ class Product extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'code',
-        'name',
-        'description',
-        'product_category_id',
+        'transaction_id',
+        'material_id',
         'base_unit_code',
-        'minimum_stock',
+        'batch_number',
+        'expired_at',
+        'quantity',
     ];
 
-    public function category()
+    public function transaction()
     {
-        return $this->belongsTo(ProductCategory::class, 'product_category_id');
+        return $this->belongsTo(Transaction::class, 'transaction_id');
+    }
+
+    public function material()
+    {
+        return $this->belongsTo(Material::class, 'material_id');
     }
 
     public function baseUnit()

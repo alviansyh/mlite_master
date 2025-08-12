@@ -1,8 +1,8 @@
 <?php
 namespace App\Filament\Wrh\Resources;
 
-use App\Filament\Wrh\Resources\ProductCategoryResource\Pages;
-use App\Models\ProductCategory;
+use App\Filament\Wrh\Resources\MaterialCategoryResource\Pages;
+use App\Models\MaterialCategory;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\Alignment;
@@ -10,20 +10,19 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class ProductCategoryResource extends Resource
+class MaterialCategoryResource extends Resource
 {
-    protected static ?string $model = ProductCategory::class;
-
-    protected static ?int $navigationSort = 3;
+    protected static ?string $model = MaterialCategory::class;
 
     protected static ?string $navigationGroup = 'Master Data';
 
-    protected static ?string $navigationLabel = 'Master Kategori Produk';
+    protected static ?string $navigationLabel = 'Kategori Bahan Baku';
 
-    protected static ?string $modelLabel = 'Master Kategori Produk';
+    protected static ?string $modelLabel = 'Kategori Bahan Baku';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 3;
 
+    protected static ?string $navigationIcon = 'heroicon-o-tag';
     public static function form(Form $form): Form
     {
         return $form
@@ -49,7 +48,7 @@ class ProductCategoryResource extends Resource
                     })
                     ->color(function (string $state): string {
                         $map = [
-                            ucwords('aktif') => 'success',
+                            ucwords('aktif')       => 'success',
                             ucwords('tidak aktif') => 'danger',
                         ];
                         return $map[$state] ?? 'secondary';
@@ -78,9 +77,9 @@ class ProductCategoryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListProductCategories::route('/'),
-            'create' => Pages\CreateProductCategory::route('/create'),
-            'edit'   => Pages\EditProductCategory::route('/{record}/edit'),
+            'index'  => Pages\ListMaterialCategories::route('/'),
+            'create' => Pages\CreateMaterialCategory::route('/create'),
+            'edit'   => Pages\EditMaterialCategory::route('/{record}/edit'),
         ];
     }
 }

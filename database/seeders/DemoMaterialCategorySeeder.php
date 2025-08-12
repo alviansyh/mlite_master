@@ -1,10 +1,10 @@
 <?php
 namespace Database\Seeders;
 
-use App\Models\ProductCategory;
+use App\Models\MaterialCategory;
 use Illuminate\Database\Seeder;
 
-class DemoProductCategorySeeder extends Seeder
+class DemoMaterialCategorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -40,7 +40,7 @@ class DemoProductCategorySeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            ProductCategory::create($category);
+            MaterialCategory::create($category);
         }
     }
 }

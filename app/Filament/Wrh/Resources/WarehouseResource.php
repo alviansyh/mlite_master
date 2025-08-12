@@ -21,15 +21,15 @@ class WarehouseResource extends Resource
 {
     protected static ?string $model = Warehouse::class;
 
-    protected static ?int $navigationSort = 1;
-
     protected static ?string $navigationGroup = 'Master Data';
 
     protected static ?string $navigationLabel = 'Lokasi Gudang';
 
     protected static ?string $modelLabel = 'Lokasi Gudang';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 1;
+
+    protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 
     public static function form(Form $form): Form
     {

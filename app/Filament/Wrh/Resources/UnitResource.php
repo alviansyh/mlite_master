@@ -12,15 +12,15 @@ class UnitResource extends Resource
 {
     protected static ?string $model = Unit::class;
 
-    protected static ?int $navigationSort = 2;
-
     protected static ?string $navigationGroup = 'Master Data';
 
     protected static ?string $navigationLabel = 'Master Satuan';
 
     protected static ?string $modelLabel = 'Master Satuan';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $navigationIcon = 'heroicon-o-scale';
 
     public static function form(Form $form): Form
     {
