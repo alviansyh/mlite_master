@@ -20,15 +20,10 @@ use Illuminate\Support\Facades\Storage;
 class WarehouseResource extends Resource
 {
     protected static ?string $model = Warehouse::class;
-
     protected static ?string $navigationGroup = 'Master Data';
-
     protected static ?string $navigationLabel = 'Lokasi Gudang';
-
     protected static ?string $modelLabel = 'Lokasi Gudang';
-
     protected static ?int $navigationSort = 1;
-
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 
     public static function form(Form $form): Form
@@ -47,10 +42,12 @@ class WarehouseResource extends Resource
                         TextInput::make('code')
                             ->label(ucwords('kode'))
                             ->dehydrateStateUsing(fn(string $state): string => strtoupper($state))
-                            ->required(),
+                            ->required()
+                            ->maxLength(100),
                         TextInput::make('name')
                             ->label(ucwords('nama'))
-                            ->required(),
+                            ->required()
+                            ->maxLength(255),
                         Select::make('state')
                             ->label(ucwords('provinsi'))
                             ->live()
@@ -68,20 +65,24 @@ class WarehouseResource extends Resource
                             ->disabled(fn(Get $get): bool => ! filled($get('state')))
                             ->searchable(),
                         Textarea::make('address')
-                            ->label(ucwords('alamat')),
+                            ->label(ucwords('alamat'))
+                            ->maxLength(1300),
                         TextInput::make('postcode')
-                            ->label(ucwords('kode pos')),
+                            ->label(ucwords('kode pos'))
+                            ->maxLength(10),
+                        Hidden::make('is_active')
+                            ->default(true),
                     ])
                     ->columns(2),
-                Section::make()
-                    ->description(ucwords('status'))
-                    ->schema([
-                        Checkbox::make('is_active')
-                            ->label(ucwords('aktif'))
-                            ->default(true)
-                        ,
-                    ])
-                    ->columns(2),
+                // Section::make()
+                //     ->description(ucwords('status'))
+                //     ->schema([
+                //         Checkbox::make('is_active')
+                //             ->label(ucwords('aktif'))
+                //             ->default(true)
+                //         ,
+                //     ])
+                //     ->columns(2),
             ]);
     }
 
@@ -125,12 +126,12 @@ class WarehouseResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                // ]),
             ]);
     }
 

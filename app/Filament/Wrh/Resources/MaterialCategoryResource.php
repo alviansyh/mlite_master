@@ -13,15 +13,11 @@ use Filament\Tables\Table;
 class MaterialCategoryResource extends Resource
 {
     protected static ?string $model = MaterialCategory::class;
-
+    protected static bool $shouldRegisterNavigation = false;
     protected static ?string $navigationGroup = 'Master Data';
-
     protected static ?string $navigationLabel = 'Kategori Bahan Baku';
-
     protected static ?string $modelLabel = 'Kategori Bahan Baku';
-
-    protected static ?int $navigationSort = 3;
-
+    // protected static ?int $navigationSort = 3;
     protected static ?string $navigationIcon = 'heroicon-o-tag';
     public static function form(Form $form): Form
     {

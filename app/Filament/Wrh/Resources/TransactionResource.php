@@ -25,15 +25,11 @@ use Illuminate\Support\Facades\Storage;
 class TransactionResource extends Resource
 {
     protected static ?string $model = Transaction::class;
-
+    protected static bool $shouldRegisterNavigation = false;
     protected static ?string $navigationLabel = 'Transaksi';
-
     protected static ?string $modelLabel = 'Transaksi';
-
     protected static ?int $navigationSort = 5;
-
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-
     public static function form(Form $form): Form
     {
         return $form
@@ -121,7 +117,6 @@ class TransactionResource extends Resource
                                         if (filled($get('material_id'))) {
                                             $material = Material::select('base_unit_code')->where('id', $get('material_id'))->first();
                                             $opt = Unit::where('code', $material['base_unit_code'])->pluck('name', 'code')->toArray();
-                                            // dd($opt);
                                         }
                                         return $opt;
                                     })
